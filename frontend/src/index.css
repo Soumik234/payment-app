@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-clr-accent {
+    --tw-text-opacity: 1;
+    color: rgb(239 109 88 / var(--tw-text-opacity));
+}
+
+@keyframes slideInAnimation {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  h2.animated-text {
+    animation: slideInAnimation 1s ease-out;
+  }
