@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { Signin } from "../pages/Signin";
+import { Signup } from "../pages/Signup";
 
 export const Navbar = () => {
   const [isSigninVisible, setSigninVisibility] = useState(false);
+  const [isSignupVisible, setSignupVisibility] = useState(false);
 
   const toggleSignin = () => {
     setSigninVisibility(!isSigninVisible);
   };
+  const toggleSignup = () => {
+    setSignupVisibility(!isSignupVisible);
+  }
   return (
     <>
     <Signin isVisible={isSigninVisible} toggleSignin={toggleSignin} />
+    <Signup isSignupVisible={isSignupVisible} toggleSignup={toggleSignup} />
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a
@@ -55,7 +61,6 @@ export const Navbar = () => {
               </a>
             </li>
             <li>
-            
                 <button onClick={toggleSignin}
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
@@ -63,12 +68,11 @@ export const Navbar = () => {
               </button>
             </li>
             <li>
-              <a
-                href="#"
+              <button onClick={toggleSignup}
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Sign Up
-              </a>
+              </button>
             </li>
             <li>
               <a

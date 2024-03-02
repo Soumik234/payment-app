@@ -4,14 +4,28 @@ const { authMiddleware } = require('../middleware');
 const {Account}=require("../db");
 const { default: mongoose } = require("mongoose");
 
-router.post("/balance",authMiddleware, async (req, res) => {
-    const account=await Account.findOne({
-        userId:req.userId
-    })
+router.post("/balance", authMiddleware, async (req, res) => {
+  try {
+    const account = await Account.findOne({
+      userId: req.userId,
+    });
+
+    if (!account) {
+      return res.status(404).json({
+        message: "Account not found",
+      });
+    }
+
     res.json({
-        balance:account.balance
-    })
-})
+      balance: account.balance,
+    });
+  } catch (error) {
+    console.error("Error while fetching balance:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
 
 router.post("/transfer", authMiddleware, async (req, res) => {
     const session = await mongoose.startSession();

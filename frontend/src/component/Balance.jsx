@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import axios from "axios";
 
-export const Balance = () => {
-  const [balance, setBalance] = useState(null);
+export const Balance = ({text}) => {
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -28,13 +28,12 @@ export const Balance = () => {
         );
       }
     };
-
     fetchBalance();
   }, []);
 
   return (
     <div className="flex">
-      <div className="font-bold text-lg">Your balance</div>
+      <div className="font-bold text-lg">{text}</div>
       <div className="font-semibold ml-4 text-lg">
         Rs {balance !== null ? balance : "Loading..."}
       </div>

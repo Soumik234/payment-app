@@ -5,7 +5,7 @@ export const Dashboard = () => {
   return (
       <div className="m-10">
         <Appbar />
-        <Balance />
+        <Balance text="Your balance:"/>
         <Users />
       </div>
   );

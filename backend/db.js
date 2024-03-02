@@ -5,7 +5,7 @@ const {Schema}=mongoose;
 mongoose.connect('mongodb+srv://soumikb1240:cg59KMgE2X4ux1vu@reat.89imp0z.mongodb.net/');
 
 const userSchema=new Schema({
-    name:String,
+    username:String,
     password:String,
     firstName:String,
     lastName:String

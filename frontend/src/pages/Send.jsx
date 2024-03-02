@@ -2,14 +2,41 @@ import { useSearchParams } from "react-router-dom";
 import { Heading } from "../component/Header";
 import { InputBox } from "../component/InputBox";
 import axios from "axios";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
+import { Balance } from "../component/Balance";
 
 export const Send = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const name = searchParams.get("name");
   const [amount, setAmount] = useState(0);
-  const [paymentStatus, setPaymentStatus] = useState(true);
+  const [paymentStatus, setPaymentStatus] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
+  const handleSendMoney = () => {
+    setIsLoading(true);
+    axios.post(
+      "http://localhost:3000/api/v1/account/transfer",
+      {
+        to: id,
+        amount
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+    .then(() => {
+      setPaymentStatus(true);
+    })
+    .catch((error) => {
+      console.error("Payment failed:", error);
+      setPaymentStatus(false);
+    })
+    .finally(() => { 
+      setIsLoading(false);
+    });
+  }
   return (
     <div className="bg-gray-400 h-screen flex justify-center">
       <div className="flex flex-col justify-center">
@@ -23,36 +50,22 @@ export const Send = () => {
             </div>
             <h3 className="text-2xl font-bold ">{name}</h3>
           </div>
+          <Balance text="Balance:"/>
+          <br />
           <InputBox placeholder={"Enter Amount"} label="Amount (in Rs)" onChange={(e)=>setAmount(e.target.value)}/>
           <button
-            onClick={() => {
-              axios.post(
-                "http://localhost:3000/api/v1/account/transfer",
-                {
-                  to: id,
-                  amount
-                },
-                {
-                  headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                  },
-                }
-              )
-              .then((response) => {
-                // Handle successful payment
-                console.log(response.data); // You might want to inspect the response for more details
-                setPaymentStatus(true);
-              })
-              .catch((error) => {
-                // Handle payment failure
-                console.error("Payment failed:", error);
-                setPaymentStatus(false);
-              });
-            }}
+            onClick={() => {handleSendMoney()}}
             type="button"
             className="w-full h-9 px-6 text-indigo-100 transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline hover:bg-green-800 mt-2 mb-7">
-            Pay
+            {isLoading ? "Loading..." : "Send Money"}
           </button>
+          <div className="flex justify-center">
+            {paymentStatus ? (
+              <span className="text-green-500">Payment successful to {name}</span>
+            ) : (
+             ""
+            )}
+            </div>
         </div>
       </div>
     </div>
